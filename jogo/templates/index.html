@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+</head>
+<body>
+    
+    <div class="container d-flex justify-content-center">
+        <div  class='row justify-content-center w-50'>
+            <div class="card-body mt-4 shadow-lg p-4 text-center">
+                <h5 class="card-title">Seja bem-vindo</h5>
+                <p class="card-text">Vamos testar seu conhecimento!</p>
+                <div class="row p-2 mb-5 mt-5">
+                    <button type="button" class="btn btn-primary" onclick=iniciarJogo()>Iniciar Jogo</button>
+                </div>
+                
+                
+                <form class="row g-3">
+                    <div class="col-2">
+                      <label for="numero_1" class="visually-hidden">Número 1</label>
+                      <input type="text" readonly class="form-control-plaintext border border-black rounded text-center" id="numero_1" value="">
+                    </div>
+                    <div class="col-1">
+                        <label for="operacao" class="visually-hidden border border-black rounded text-center">Número 1</label>
+                        <input type="text" readonly class="form-control-plaintext text-center" id="operacao" value="">
+                    </div>
+                    <div class="col-2">
+                        <label for="numero_2" class="visually-hidden">Número 2</label>
+                        <input type="number" readonly class="form-control-plaintext border border-black rounded text-center" id="numero_2" value="">
+                    </div>
+                    <div class="col-1">
+                        <label for="igual" class="visually-hidden">Número 1</label>
+                        <input type="text" readonly class="form-control-plaintext text-center" id="igual" value="=">
+                    </div>
+                    <div class="col-3">
+                        <label for="resposta" class="visually-hidden">Resposta</label>
+                        <input type="number" class="form-control border-3 rounded text-center" name="resposta" id = "resposta" value="">
+                    </div>
+                    
+                    <div class="col-3">
+                      <button type="button" class="btn btn-primary" id="verificar" onclick=verificarResposta() oninput="habilitarBotaoVerificar()">Verificar</button>
+                    </div>
+                </form>
+
+                <div id="tempo"></div>
+
+                <div class="card-text alert mt-3" id="resposta-alerta" role="alert">   </div>
+                
+    
+            </div>
+        </div>
+    </div>
+
+    <script>
+        var  valores;
+        
+        function verificarResposta(){
+            var resposta = document.getElementById('resposta').value;
+            var resposta_certa = valores.resposta;
+            var resposta_alerta = document.getElementById('resposta-alerta');
+
+            if(resposta == resposta_certa){
+                resposta_alerta.innerText = "Resposta correta! Parabéns!";     
+                resposta_alerta.classList.remove('alert-danger');       
+                resposta_alerta.classList.add('alert-success');
+                setTimeout(() => {
+                    clearTimeout(neuTime);
+                    iniciarJogo()}, 2000);
+                
+            }else{
+                resposta_alerta.innerText = "Resposta errada. A resposta certa é: " +resposta_certa;
+                resposta_alerta.classList.remove('alert-success');
+                resposta_alerta.classList.add('alert-danger');
+                setTimeout(() => {
+                    clearTimeout(neuTime);
+                    iniciarJogo()}, 2000);
+            }
+        }
+
+        
+        function contador(tempo){      
+            var elementoTempo = document.getElementById('tempo');  
+            if (tempo >= 0) {
+                elementoTempo.textContent = tempo;
+                tempo--;
+                console.log(tempo);
+                setTimeout(() => {contador(tempo)}, 1000); // Chama a função novamente após 1 segundo
+            }else{
+                elementoTempo.textContent = "Tempo exgotado";
+                
+            }            
+        }
+        function iniciarJogo(){
+            
+            document.getElementById('resposta').value = "";
+            $.ajax({
+                url: "jogar",
+                type: "get",
+                datatype: "json",
+                success: function(data){
+                    valores = data.resposta;
+                    document.getElementById('numero_1').value = valores.numero1;
+                    document.getElementById('numero_2').value = valores.numero2;
+                    document.getElementById('operacao').value = valores.operacao;
+                    const neuTime = setTimeout(() => {iniciarJogo()}, 10000);
+                }
+                
+            });
+            
+        }
+
+        function habilitarBotaoVerificar() {
+            var respostaInput = document.getElementById('resposta');
+            var verificarBtn = document.getElementById('verificar');
+
+            if (respostaInput.value.trim() !== '') {
+                verificar.disabled = false; // Habilita o botão
+            } else {
+                verificar.disabled = true; // Desabilita o botão
+            }
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+   
+</body>
+</html>
