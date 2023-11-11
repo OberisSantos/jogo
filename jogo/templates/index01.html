@@ -1,0 +1,45 @@
+<div class="container d-flex justify-content-center">
+    <div  class='row justify-content-center w-50'>
+        <div class="card-body mt-4 shadow-lg p-4 text-center">
+            <h5 class="card-title">Seja bem-vindo</h5>
+            <p class="card-text">Vamos testar seu conhecimento!</p>
+            <div class="row p-2 mb-5 mt-5">
+                <button type="button" class="btn btn-primary" onclick=iniciarJogo()>Iniciar Jogo</button>
+            </div>
+            
+            
+            <form class="row g-3">
+                <div class="col-2">
+                  <label for="numero_1" class="visually-hidden">Número 1</label>
+                  <input type="text" readonly class="form-control-plaintext border border-black rounded text-center" id="numero_1" value="">
+                </div>
+                <div class="col-1">
+                    <label for="operacao" class="visually-hidden border border-black rounded text-center">Número 1</label>
+                    <input type="text" readonly class="form-control-plaintext text-center" id="operacao" value="">
+                </div>
+                <div class="col-2">
+                    <label for="numero_2" class="visually-hidden">Número 2</label>
+                    <input type="number" readonly class="form-control-plaintext border border-black rounded text-center" id="numero_2" value="">
+                </div>
+                <div class="col-1">
+                    <label for="igual" class="visually-hidden">Número 1</label>
+                    <input type="text" readonly class="form-control-plaintext text-center" id="igual" value="=">
+                </div>
+                <div class="col-3">
+                    <label for="resposta" class="visually-hidden">Resposta</label>
+                    <input type="number" class="form-control border-3 rounded text-center" name="resposta" id = "resposta" value="">
+                </div>
+                
+                <div class="col-3">
+                  <button type="button" class="btn btn-primary" id="verificar" onclick=verificarResposta() oninput="habilitarBotaoVerificar()">Verificar</button>
+                </div>
+            </form>
+
+            <div id="tempo"></div>
+
+            <div class="card-text alert mt-3" id="resposta-alerta" role="alert">   </div>
+            
+
+        </div>
+    </div>
+</div>

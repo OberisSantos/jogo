@@ -5,129 +5,177 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">-->
     <script src="http://code.jquery.com/jquery-2.0.3.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+          theme: {
+            extend: {
+              colors: {
+                clifford: '#da373d',
+              }
+            }
+          }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+          .content-auto {
+            content-visibility: auto;
+          }
+        }
+    </style>
+   
+
 </head>
 <body>
-    
-    <div class="container d-flex justify-content-center">
-        <div  class='row justify-content-center w-50'>
-            <div class="card-body mt-4 shadow-lg p-4 text-center">
-                <h5 class="card-title">Seja bem-vindo</h5>
-                <p class="card-text">Vamos testar seu conhecimento!</p>
-                <div class="row p-2 mb-5 mt-5">
-                    <button type="button" class="btn btn-primary" onclick=iniciarJogo()>Iniciar Jogo</button>
-                </div>
-                
-                
-                <form class="row g-3">
-                    <div class="col-2">
-                      <label for="numero_1" class="visually-hidden">Número 1</label>
-                      <input type="text" readonly class="form-control-plaintext border border-black rounded text-center" id="numero_1" value="">
-                    </div>
-                    <div class="col-1">
-                        <label for="operacao" class="visually-hidden border border-black rounded text-center">Número 1</label>
-                        <input type="text" readonly class="form-control-plaintext text-center" id="operacao" value="">
-                    </div>
-                    <div class="col-2">
-                        <label for="numero_2" class="visually-hidden">Número 2</label>
-                        <input type="number" readonly class="form-control-plaintext border border-black rounded text-center" id="numero_2" value="">
-                    </div>
-                    <div class="col-1">
-                        <label for="igual" class="visually-hidden">Número 1</label>
-                        <input type="text" readonly class="form-control-plaintext text-center" id="igual" value="=">
-                    </div>
-                    <div class="col-3">
-                        <label for="resposta" class="visually-hidden">Resposta</label>
-                        <input type="number" class="form-control border-3 rounded text-center" name="resposta" id = "resposta" value="">
-                    </div>
-                    
-                    <div class="col-3">
-                      <button type="button" class="btn btn-primary" id="verificar" onclick=verificarResposta() oninput="habilitarBotaoVerificar()">Verificar</button>
-                    </div>
-                </form>
-
-                <div id="tempo"></div>
-
-                <div class="card-text alert mt-3" id="resposta-alerta" role="alert">   </div>
-                
-    
-            </div>
+    <section class="mx-auto box-content h-screen w-[800px] border-4 bg-gradient-to-b from-blue-950 p-4">
+        <article class="mx-auto mt-12 flex flex-col rounded-lg text-center">
+          <h2 class="text-2xl font-bold tracking-wider text-slate-50">Seja bem-vindo ao jogo</h2>
+          <p class="text-base font-semibold tracking-wider text-slate-200">Vamos testar seus conhecimentos em matemática</p>
+        </article>
+      
+        <div class="m-5 flex justify-center gap-3">
+          <button id="iniciarJogoBtn" class="w-1/4 rounded-md border border-gray-600 bg-cyan-800 py-2 text-lg font-bold text-white duration-200 hover:-translate-y-1 hover:scale-110 hover:bg-cyan-900">Iniciar Jogo</button>
+          <button id="pauseJogoBtn" class="w-1/4 rounded-md border border-gray-600 bg-amber-800 py-2 text-lg font-bold text-white duration-200 hover:-translate-y-1 hover:scale-110 hover:bg-amber-900" style="display: none;">Pausar Jogo</button>
         </div>
-    </div>
+      
+        <div id="operacaoCard" class="mx-auto flex h-[250px] w-[750px] flex-col justify-between space-y-5 rounded-lg border border-gray-600 bg-neutral-300 bg-opacity-10 p-3 shadow-2xl">
+          <div class="w-full">
+            <p class="text-center text-lg font-medium tracking-wider text-slate-200">Qual o valor da equação?</p>
+          </div>
+      
+          <div class="flex mx-auto space-x-4">
+            <span id="primeiroNu" class="w-24 text-center rounded-lg border border-gray-500 bg-slate-800  py-2 text-lg font-bold tracking-wide text-stone-50"></span>
+            <span id="operador" class="rounded-lg border border-gray-300 px-6 py-2 text-lg font-bold"></span>
+            <span id="segundoNu" class="text-center rounded-lg border border-gray-500 bg-slate-800 w-24 py-2 text-lg font-bold tracking-wide text-stone-50"></span>
+            <span class="rounded-lg border border-gray-300 px-6 py-2 text-lg font-bold">=</span>
+            <input id="respostaInput" class="text-center w-28 rounded-lg border border-gray-500 bg-slate-700 w-20 py-2 text-lg font-bold tracking-wide text-stone-50 hover:bg-slate-800" type="text" required disabled/>
+      
+            <button id="verificarBtn" class="w-48 rounded-lg border border-gray-400 bg-cyan-800 py-2 text-lg font-bold text-white duration-200 hover:scale-110 hover:bg-cyan-900" disabled>Verificar</button>
+          </div>
+
+          <div id="temporizador" class="font-bold text-white text-lg flex w-16 h-16 bg-cyan-800 rounded-full border border-gray-400 justify-center items-center">10            
+          </div>
+         
+          <div class="flex w-full justify-center">
+            <div style="display: none;" id="txtResposta" class="flex w-auto px-3 rounded-md bg-cyan-800 py-1 text-center text-sm tracking-wider text-slate-100"></p>
+          </div>
+        </div>
+      </section>
+      
 
     <script>
-        var  valores;
+        const iniciarJogoBtn = document.querySelector("#iniciarJogoBtn");
+        const pauseJogoBtn = document.querySelector("#pauseJogoBtn");
+        const primeiroNu = document.querySelector("#primeiroNu");
+        const segundoNu = document.querySelector("#segundoNu");
+        const operador = document.querySelector("#operador");
+        const respostaInput = document.getElementById("respostaInput");
+        const verificarBtn = document.querySelector("#verificarBtn");
+        const txtResposta = document.querySelector("#txtResposta");
+        const temporizador = document.querySelector("#temporizador");
         
+
+        iniciarJogoBtn.addEventListener("click", startJogo);        
+        pauseJogoBtn.addEventListener("click", pauseJogo);
+        verificarBtn.addEventListener("click", verificarResposta);
+
+        iniciarJogoBtn.addEventListener("click", startTemporizador);
+        pauseJogoBtn.addEventListener("click", pauseTemporizador);
+        
+
+        let dados;
+        let intervalo;
+        let isPause = false;
+        let segundos = 10;
+
+        function startTemporizador(){
+          isPause = false;
+          intervalo = setInterval(() => {  
+            if(!isPause){
+              temporizador.textContent = segundos;
+              segundos--;  
+              if(segundos < 0){
+                txtResposta.style.display = "block";
+                txtResposta.textContent = "Tempo esgotado";
+                verificarBtn.disabled = true;
+
+                pauseTemporizador();
+                setTimeout(() => {
+                  txtResposta.style.display = "none";
+                  startJogo();
+                  startTemporizador()
+                  verificarBtn.disabled = false;}, 2000);
+              }       
+            }
+          },1000);
+        }
+
+        function pauseTemporizador(){
+          isPause = true;
+          clearInterval(intervalo);
+          segundos = 10
+        }
+
         function verificarResposta(){
-            var resposta = document.getElementById('resposta').value;
-            var resposta_certa = valores.resposta;
-            var resposta_alerta = document.getElementById('resposta-alerta');
+          if(respostaInput.value == ""){
+            respostaInput.focus();
+          }else{
+            pauseTemporizador();
 
-            if(resposta == resposta_certa){
-                resposta_alerta.innerText = "Resposta correta! Parabéns!";     
-                resposta_alerta.classList.remove('alert-danger');       
-                resposta_alerta.classList.add('alert-success');
-                setTimeout(() => {
-                    clearTimeout(neuTime);
-                    iniciarJogo()}, 2000);
-                
+            var respostaSugerida = respostaInput.value;
+            var respostaCorreta = dados.resposta;
+            txtResposta.style.display = "block";
+            if(respostaSugerida == respostaCorreta){
+              txtResposta.textContent = "Resposta correta! Parabéns!";
             }else{
-                resposta_alerta.innerText = "Resposta errada. A resposta certa é: " +resposta_certa;
-                resposta_alerta.classList.remove('alert-success');
-                resposta_alerta.classList.add('alert-danger');
-                setTimeout(() => {
-                    clearTimeout(neuTime);
-                    iniciarJogo()}, 2000);
+              txtResposta.textContent = "Resposta errada. A resposta certa é: " +respostaCorreta;
             }
+            setTimeout(() => {
+              txtResposta.style.display = "none";
+              startJogo();
+              startTemporizador()
+            }, 2000);
+          };
         }
 
-        
-        function contador(tempo){      
-            var elementoTempo = document.getElementById('tempo');  
-            if (tempo >= 0) {
-                elementoTempo.textContent = tempo;
-                tempo--;
-                console.log(tempo);
-                setTimeout(() => {contador(tempo)}, 1000); // Chama a função novamente após 1 segundo
-            }else{
-                elementoTempo.textContent = "Tempo exgotado";
-                
-            }            
-        }
-        function iniciarJogo(){
+        function startJogo(){
+          iniciarJogoBtn.style.display = "none";
+          pauseJogoBtn.style.display = "block";
             
-            document.getElementById('resposta').value = "";
-            $.ajax({
-                url: "jogar",
-                type: "get",
-                datatype: "json",
-                success: function(data){
-                    valores = data.resposta;
-                    document.getElementById('numero_1').value = valores.numero1;
-                    document.getElementById('numero_2').value = valores.numero2;
-                    document.getElementById('operacao').value = valores.operacao;
-                    const neuTime = setTimeout(() => {iniciarJogo()}, 10000);
-                }
-                
-            });
-            
+          respostaInput.value= "";
+          verificarBtn.disabled = false;
+          respostaInput.disabled = false;
+          $.ajax({
+              url: "jogar",
+              type: "get",
+              datatype: "json",
+              success: function(data){
+                  dados = data.resposta;
+                  primeiroNu.textContent = dados.numero1;
+                  segundoNu.textContent = dados.numero2;
+                  operador.textContent = dados.operacao;
+              }              
+          });
         }
 
-        function habilitarBotaoVerificar() {
-            var respostaInput = document.getElementById('resposta');
-            var verificarBtn = document.getElementById('verificar');
-
-            if (respostaInput.value.trim() !== '') {
-                verificar.disabled = false; // Habilita o botão
-            } else {
-                verificar.disabled = true; // Desabilita o botão
-            }
+        function pauseJogo(){
+          iniciarJogoBtn.style.display = "block";
+          pauseJogoBtn.style.display = "none";
+          respostaInput.value= "";
+          primeiroNu.textContent = "";
+          segundoNu.textContent = "";
+          operador.textContent = "";
+          txtResposta.style.display = "none";
+          verificarBtn.disabled = true;
+          respostaInput.disabled = true;
         }
 
     </script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>-->
    
 </body>
 </html>
