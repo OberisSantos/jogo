@@ -148,8 +148,11 @@
           respostaInput.value= "";
           verificarBtn.disabled = false;
           respostaInput.disabled = false;
+          let url_atual = window.location.href;
+          url_atual = url_atual + "jogar";
+          console.log(url_atual);
           $.ajax({
-              url: "jogar",
+              url: url_atual,              
               type: "get",
               datatype: "json",
               success: function(data){

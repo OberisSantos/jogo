@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-y95zx$^qu-$a9_3r-1geokfrmfp0rgg2wj-i@uei@*vw=dbn-b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["matematic-gamer.onrender.com"]
+ALLOWED_HOSTS = ["matematic-gamer.onrender.com", "127.0.0.1"]
 
 
 # Application definition
